@@ -1,0 +1,58 @@
+services:
+  api:
+      container_name: api
+      build:
+        context: ./
+        dockerfile: ./dockerfile
+      ports:
+        - 8000:8000
+      depends_on:
+        db:
+          condition: service_healthy
+      volumes:
+        - ./:/var/www/html
+        - /var/www/html/vendor
+
+  db:
+    image: mysql:latest
+    container_name: MYSQL
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task_manager
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p",
+          -proot
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
+    volumes:
+      - db-data:/var/lib/phpmyadmin
+
+volumes:
+  db-data:

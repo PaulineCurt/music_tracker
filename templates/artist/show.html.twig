@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ artist.name }}{% endblock %}
+
+{% block body %}
+    <div class="artist">
+        <div class="artist-header">
+            <h1>{{ artist.name }}</h1>
+        </div>        
+        <form action="{{ path('artist_favorite', { 'id': artist.id }) }}" method="post">
+            <button type="submit" class="favorite_button">Ajouter aux favoris</button>
+        </form>    
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endfor %}
+        <div class="artist-details">
+            <div class="artist-info">
+                <p>Genres: {{ artist.genres | join(', ') }}</p>
+                <p>Popularité: {{ artist.popularity }}</p>
+                <p>Followers: {{ artist.followers.total }}</p>
+                {% if artist.images is not empty %}
+                    <div class="artist-image">
+                        <img src="{{ artist.images[0].url }}" alt="{{ artist.name }}">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <a class="return_button" href="{{ path('artist_search') }}">Retour à la recherche</a>
+    </div>
+
+
+{% endblock %}

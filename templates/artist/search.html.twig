@@ -1,0 +1,22 @@
+{# templates/artist/search.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche d'artistes{% endblock %}
+
+{% block body %}
+
+<form method="get" action="{{ path('artist_search') }}">
+    <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
+    <button class="button_search" type="submit">Rechercher</button>
+</form>
+
+{% if artists is not empty %}
+    <ul>
+        {% for artist in artists %}
+            <li><a class="artist_link" href="{{ path('artist_show', { 'id': artist.id }) }}">{{ artist.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun artiste trouvé.</p>
+{% endif %}
+{% endblock body %}

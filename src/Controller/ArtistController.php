@@ -8,14 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\FavoriteArtist;
 
 class ArtistController extends AbstractController
 {
     private $spotifyService;
+    private $entityManager;
 
     public function __construct(SpotifyService $spotifyService, EntityManagerInterface $entityManager)
     {
         $this->spotifyService = $spotifyService;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -45,9 +48,13 @@ class ArtistController extends AbstractController
         // Vérifiez si l'artiste a des images
         $hasImage = !empty($artist['images']);
 
+        // Vérifiez si l'artiste est déjà dans les favoris
+        $isFavorite = $this->entityManager->getRepository(FavoriteArtist::class)->findOneBy(['artistId' => $id]) !== null;
+
         return $this->render('artist/show.html.twig', [
             'artist' => $artist,
             'hasImage' => $hasImage,
+            'isFavorite' => $isFavorite,
         ]);
     }
 }

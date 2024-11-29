@@ -1,9 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche d'artistes{% endblock %}
+
+{% block body %}
+
 {% if favorites is not empty %}
-    <ul>
+    <div class="favorites-grid">
         {% for favorite in favorites %}
-            <li>{{ favorite.getArtistId() }}</li>
+            <div class="favorite-item">
+                <a class="favorites-link" href="{{ path('artist_show', { 'id': favorite.getArtistId() }) }}">
+                    <p>{{ favorite.getName() }}</p>
+                    <img class="favorites_img" src="{{ favorite.getImage() }}" alt="{{ favorite.getName() }}">
+                </a>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>Aucun artiste favori trouvé.</p>
 {% endif %}
+
+{% endblock %}

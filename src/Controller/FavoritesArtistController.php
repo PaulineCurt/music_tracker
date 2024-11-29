@@ -23,9 +23,29 @@ class FavoritesArtistController extends AbstractController
      */
     public function favoriteArtist(Request $request, $id): Response
     {
+        $name = $request->request->get('name');
+        $image = $request->request->get('image');
+
+        if ($name === null || $image === null) {
+            // Gérer le cas où les paramètres sont manquants
+            $this->addFlash('error', 'Les paramètres name et image sont requis.');
+            return $this->redirectToRoute('artist_show', ['id' => $id]);
+        }
+
+        // Vérifier si l'artiste existe déjà dans les favoris
+        $existingFavorite = $this->entityManager->getRepository(FavoriteArtist::class)->findOneBy(['artistId' => $id]);
+
+        if ($existingFavorite) {
+            // Gérer le cas où l'artiste est déjà dans les favoris
+            $this->addFlash('error', 'Cet artiste est déjà dans vos favoris.');
+            return $this->redirectToRoute('artist_show', ['id' => $id]);
+        }
+
         // Créer un nouvel objet FavoriteArtist et le sauvegarder dans la base de données
         $favoriteArtist = new FavoriteArtist();
         $favoriteArtist->setArtistId($id);
+        $favoriteArtist->setName($name);
+        $favoriteArtist->setImage($image);
 
         $this->entityManager->persist($favoriteArtist);
         $this->entityManager->flush();
@@ -46,5 +66,23 @@ class FavoritesArtistController extends AbstractController
         return $this->render('favorites/favorites.html.twig', [
             'favorites' => $favorites,
         ]);
+    }
+
+    /**
+     * @Route("/artist/unfavorite/{id}", name="artist_unfavorite", methods={"POST"})
+     */
+    public function removeFavoriteArtist($id): Response
+    {
+        $favoriteArtist = $this->entityManager->getRepository(FavoriteArtist::class)->findOneBy(['artistId' => $id]);
+
+        if ($favoriteArtist) {
+            $this->entityManager->remove($favoriteArtist);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Artiste supprimé des favoris.');
+        } else {
+            $this->addFlash('error', 'Cet artiste n\'est pas dans vos favoris.');
+        }
+
+        return $this->redirectToRoute('artist_show', ['id' => $id]);
     }
 }

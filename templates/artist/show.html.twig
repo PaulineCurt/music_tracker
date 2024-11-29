@@ -6,17 +6,27 @@
     <div class="artist">
         <div class="artist-header">
             <h1>{{ artist.name }}</h1>
-        <form action="{{ path('artist_favorite', { 'id': artist.id }) }}" method="post">
-            <button type="submit" class="favorite_button">Ajouter aux favoris</button>
-        </form>    
-        </div>        
+            {% if isFavorite %}
+                <form action="{{ path('artist_unfavorite', { 'id': artist.id }) }}" method="post">
+                    <button type="submit" class="favorite_button">Supprimer des favoris</button>
+                </form>
+            {% else %}
+                <form action="{{ path('artist_favorite', { 'id': artist.id }) }}" method="post">
+                    <input type="hidden" name="name" value="{{ artist.name }}">
+                    <input type="hidden" name="image" value="{{ artist.images[0].url }}">
+                    <button type="submit" class="favorite_button">Ajouter aux favoris</button>
+                </form>
+            {% endif %}
+        </div>
+        
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
-            </div>
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
             {% endfor %}
         {% endfor %}
+        
         <div class="artist-details">
             <div class="artist-info">
                 <p>Genres: {{ artist.genres | join(', ') }}</p>
@@ -28,8 +38,7 @@
                 {% endif %}
             </div>
         </div>
+        
         <a class="return_button" href="{{ path('artist_search') }}">Retour à la recherche</a>
     </div>
-
-
 {% endblock %}

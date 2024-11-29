@@ -1,6 +1,18 @@
 body {
   padding: 20px;
 }
+nav {
+  border-bottom: 1px solid #81b71a;
+  margin-bottom: 20px;
+}
+nav ul li a {
+  color: #81b71a;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: white;
+  }
+}
 .return_button {
   background-color: #81b71a;
   color: white;
@@ -29,6 +41,7 @@ body {
 .artist-image img {
   max-width: 300px;
   height: auto;
+  border-radius: 100%;
 }
 
 .back-link {
@@ -64,7 +77,8 @@ input {
   background-color: #81b71a;
   color: white;
 }
-.artist_link {
+.artist_link,
+.favorites-link {
   color: #81b71a;
   text-decoration: none;
 
@@ -74,18 +88,40 @@ input {
   }
 }
 
-.search_form {
+.header-container {
   display: flex;
-  justify-items: center;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  width: 100%;
+  margin-bottom: 20px;
 }
-/* .form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-} */
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.favorite-item {
+  text-align: center;
+}
+
+.favorites_img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100px;
+  border-radius: 100%;
+}
+
+.search-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #81b71a;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.search-button:hover {
+  background-color: white;
+  color: #81b71a;
+}

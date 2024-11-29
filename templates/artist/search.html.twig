@@ -5,9 +5,11 @@
 
 {% block body %}
 
-<form method="get" action="{{ path('artist_search') }}">
-    <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
-    <button class="button_search" type="submit">Rechercher</button>
+<form class="search_form" method="get" action="{{ path('artist_search') }}">
+    <div class="form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
+            <button class="button_search" type="submit">Rechercher</button>
+    </div>
 </form>
 
 {% if artists is not empty %}

@@ -7,6 +7,16 @@ body {
   text-decoration: none;
   padding: 10px;
   border-radius: 5px;
+
+  &:hover {
+    background-color: white;
+    color: #81b71a;
+  }
+}
+.artist-header {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
 }
 .artist {
   display: flex;
@@ -17,7 +27,7 @@ body {
   gap: 2rem;
 }
 .artist-image img {
-  max-width: 400px;
+  max-width: 300px;
   height: auto;
 }
 
@@ -25,16 +35,31 @@ body {
   margin-left: auto;
 }
 
+.favorite_button {
+  font-size: medium;
+  background-color: #81b71a;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: #81b71a;
+  }
+}
+
 input {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid #81b71a;
   margin-bottom: 10px;
 }
 
 .button_search {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid #81b71a;
   background-color: #81b71a;
   color: white;
@@ -48,3 +73,19 @@ input {
     color: white;
   }
 }
+
+.search_form {
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+/* .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+} */

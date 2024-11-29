@@ -1,0 +1,9 @@
+{% if favorites is not empty %}
+    <ul>
+        {% for favorite in favorites %}
+            <li>{{ favorite.getArtistId() }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun artiste favori trouvé.</p>
+{% endif %}

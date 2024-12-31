@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ album.name }}
+{% endblock %}
+
+{% block body %}
+	<div class="flex items-center gap-10 mb-10">
+		{% if img %}
+			<img class="h-56 w-56 rounded-lg" src="{{ img }}" alt="{{ album.name }}">
+		{% endif %}
+		<div>
+			<h3>{{ albumType|capitalize }}</h3>
+			<h1 class="font-bold text-8xl">{{ album.name }}</h1>
+			<div class="mt-5 flex gap-1 text-sm">
+				<a href="{{ path('artist_show', { 'id': artist.id }) }}">
+					<span class="hover:text-pink-300">{{ artist.name }}</span>
+				</a>
+				•
+				<p>{{ releaseYear }}</p>
+				•
+				<p>{{ totalTracks }}
+					titres</p>
+				•
+				<p>{{ totalDurationHours }}h
+					{{ totalDurationMinutes }}min</p>
+
+			</div>
+		</div>
+	</div>
+
+	<table>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Titre</th>
+				<th>Durée</th>
+				{% if tracks|filter(track => track.preview_url is not null)|length > 0 %}
+					<th>Preview</th>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for track in tracks %}
+				<tr>
+					<td>{{ loop.index }}</td>
+					<td>{{ track.name }}</td>
+					<td>
+						{% set duration = track.duration_ms / 1000 %}
+						{% set minutes = duration // 60 %}
+						{% set seconds = duration % 60 %}
+						{{ minutes }}:{{ '%02d'|format(seconds) }}
+					</td>
+					{% if track.preview_url %}
+						<td>
+							<audio controls>
+								<source src="{{ track.preview_url }}" type="audio/mpeg">
+								Votre navigateur ne supporte pas l'élément audio.
+							</audio>
+						</td>
+					{% else %}
+						{% if tracks|filter(track => track.preview_url is not null)|length > 0 %}
+							<td>Pas de preview disponible</td>
+						{% else %}
+							<td></td>
+						{% endif %}
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

@@ -57,6 +57,28 @@ class SpotifyService
         return $data['items'] ?? [];
     }
 
+    public function getAlbum(string $id): array
+    {
+        $response = $this->client->request('GET', 'https://api.spotify.com/v1/albums/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
+        ]);
+
+        return $response->toArray();
+    }
+
+    public function getTrack(string $trackId): array
+    {
+        $response = $this->client->request('GET', 'https://api.spotify.com/v1/tracks/' . $trackId, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
+        ]);
+
+        return $response->toArray();
+    }
+
     private function getAccessToken(): string
     {
         $clientId = $this->params->get('spotify_client_id');

@@ -49,9 +49,11 @@
 					<h1 class="font-bold text-xl">Discographie</h1>
 					<ul class="grid grid-cols-6 gap-4 mt-6">
 						{% for album in albums %}
-							<li class="list-none">
-								<img class="w-36 h-36 rounded-lg" src="{{ album.images[0].url }}" alt="{{ album.name }}">
-								<p>{{ album.name }}</p>
+							<li class="list-none max-w-36">
+								<a href="{{ path('album_show', { 'id': album.id }) }}">
+									<img class="w-36 h-36 rounded-lg" src="{{ album.images[0].url }}" alt="{{ album.name }}">
+									<p>{{ album.name }}</p>
+								</a>
 							</li>
 						{% endfor %}
 					</ul>

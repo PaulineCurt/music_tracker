@@ -64,4 +64,50 @@ class ArtistController extends AbstractController
             'albums' => $albums,
         ]);
     }
+
+    /**
+     * @Route("/album/{id}", name="album_show")
+     */
+    public function showAlbum(string $id): Response
+    {
+        $album = $this->spotifyService->getAlbum($id);
+
+        // Récupération des pistes
+        $tracks = array_map(function ($track) {
+            return [
+                'name' => $track['name'],
+                'duration_ms' => $track['duration_ms'],
+                'preview_url' => $track['preview_url'] ?? null,
+            ];
+        }, $album['tracks']['items']);
+
+        // Autres données nécessaires
+        $totalTracks = $album['total_tracks'];
+        $img = !empty($album['images']) ? $album['images'][0]['url'] : null;
+        $artist = $album['artists'][0];
+        $releaseYear = (new \DateTime($album['release_date']))->format('Y');
+        $albumType = $album['album_type'];
+
+        // Calcul de la durée totale en millisecondes
+        $totalDurationMs = array_reduce($tracks, function ($carry, $track) {
+            return $carry + $track['duration_ms'];
+        }, 0);
+
+        // Conversion de la durée totale en heures et minutes
+        $totalDurationMinutes = floor($totalDurationMs / 60000);
+        $totalDurationHours = floor($totalDurationMinutes / 60);
+        $totalDurationMinutes = $totalDurationMinutes % 60;
+
+        return $this->render('album/show.html.twig', [
+            'album' => $album,
+            'tracks' => $tracks,
+            'totalTracks' => $totalTracks,
+            'img' => $img,
+            'artist' => $artist,
+            'releaseYear' => $releaseYear,
+            'totalDurationHours' => $totalDurationHours,
+            'totalDurationMinutes' => $totalDurationMinutes,
+            'albumType' => $albumType,
+        ]);
+    }
 }

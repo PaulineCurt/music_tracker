@@ -37,6 +37,17 @@
                     </div>
                 {% endif %}
             </div>
+            <div class="artist-albums">
+                <h2>Albums</h2>
+                <ul>
+                    {% for album in albums %}
+                        <li>
+                            <img src="{{ album.images[0].url }}" alt="{{ album.name }}" width="100">
+                            <p>{{ album.name }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

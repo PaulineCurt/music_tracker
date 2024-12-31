@@ -44,6 +44,19 @@ class SpotifyService
         return $response->toArray();
     }
 
+    public function getArtistAlbums(string $id): array
+    {
+        $response = $this->client->request('GET', 'https://api.spotify.com/v1/artists/' . $id . '/albums', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
+        ]);
+
+        $data = $response->toArray();
+
+        return $data['items'] ?? [];
+    }
+
     private function getAccessToken(): string
     {
         $clientId = $this->params->get('spotify_client_id');

@@ -31,6 +31,9 @@ class ArtistController extends AbstractController
         $artists = [];
         if ($query) {
             $artists = $this->spotifyService->searchArtists($query);
+            foreach ($artists as &$artist) {
+                $artist['image'] = !empty($artist['images']) ? $artist['images'][0]['url'] : null;
+            }
         }
 
         return $this->render('artist/search.html.twig', [
@@ -51,10 +54,14 @@ class ArtistController extends AbstractController
         // Vérifiez si l'artiste est déjà dans les favoris
         $isFavorite = $this->entityManager->getRepository(FavoriteArtist::class)->findOneBy(['artistId' => $id]) !== null;
 
+        // Récupérez les albums de l'artiste
+        $albums = $this->spotifyService->getArtistAlbums($id);
+
         return $this->render('artist/show.html.twig', [
             'artist' => $artist,
             'hasImage' => $hasImage,
             'isFavorite' => $isFavorite,
+            'albums' => $albums,
         ]);
     }
 }

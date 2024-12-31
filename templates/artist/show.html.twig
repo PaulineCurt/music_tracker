@@ -1,53 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ artist.name }}{% endblock %}
+{% block title %}
+	{{ artist.name }}
+{% endblock %}
 
 {% block body %}
-    <div class="artist">
-        <div class="artist-header">
-            <h1>{{ artist.name }}</h1>
-            {% if isFavorite %}
-                <form action="{{ path('artist_unfavorite', { 'id': artist.id }) }}" method="post">
-                    <button type="submit" class="favorite_button">Supprimer des favoris</button>
-                </form>
-            {% else %}
-                <form action="{{ path('artist_favorite', { 'id': artist.id }) }}" method="post">
-                    <input type="hidden" name="name" value="{{ artist.name }}">
-                    <input type="hidden" name="image" value="{{ artist.images[0].url }}">
-                    <button type="submit" class="favorite_button">Ajouter aux favoris</button>
-                </form>
-            {% endif %}
-        </div>
-        
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-        
-        <div class="artist-details">
-            <div class="artist-info">
-                <p>Genres: {{ artist.genres | join(', ') }}</p>
-                <p>{{ artist.followers.total }} Followers</p>
-                {% if artist.images is not empty %}
-                    <div class="artist-image">
-                        <img src="{{ artist.images[0].url }}" alt="{{ artist.name }}">
-                    </div>
-                {% endif %}
-            </div>
-            <div class="artist-albums">
-                <h2>Albums</h2>
-                <ul>
-                    {% for album in albums %}
-                        <li>
-                            <img src="{{ album.images[0].url }}" alt="{{ album.name }}" width="100">
-                            <p>{{ album.name }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+	{% for label, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }}">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+
+	<div>
+		<h1 class="font-bold text-6xl">{{ artist.name }}</h1>
+		<div>
+			<div>
+				<p>Genres:
+					{{ artist.genres | join(', ') }}</p>
+				<p>{{ artist.followers.total }}
+					Followers</p>
+				{% if artist.images is not empty %}
+					<img class="w-72 h-72 rounded-xl" src="{{ artist.images[0].url }}" alt="{{ artist.name }}">
+				{% endif %}
+			</div>
+			<div>
+				{% if isFavorite %}
+					<form action="{{ path('artist_unfavorite', { 'id': artist.id }) }}" method="post">
+						<button class="!w-52 bg-transparent border-none hover:text-pink-500" type="submit">
+							<i class="fas fa-heart-broken"></i>
+							<span>Se désabonner<span/>
+							</button>
+						</form>
+					{% else %}
+						<form action="{{ path('artist_favorite', { 'id': artist.id }) }}" method="post">
+							<input type="hidden" name="name" value="{{ artist.name }}">
+							<input type="hidden" name="image" value="{{ artist.images[0].url }}">
+							<button class="!w-52 bg-transparent border-none hover:text-pink-500" type="submit">
+								<i class="fas fa-heart"></i>
+								<span>
+									S'abonner</span>
+							</button>
+						</form>
+					{% endif %}
+				</div>
+				<div class="mt-10">
+					<h1 class="font-bold text-xl">Discographie</h1>
+					<ul class="grid grid-cols-6 gap-4 mt-6">
+						{% for album in albums %}
+							<li class="list-none">
+								<img class="w-36 h-36 rounded-lg" src="{{ album.images[0].url }}" alt="{{ album.name }}">
+								<p>{{ album.name }}</p>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	{% endblock %}

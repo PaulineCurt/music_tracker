@@ -1,28 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche d'artistes{% endblock %}
+{% block title %}Recherche d'artistes
+{% endblock %}
 
 {% block body %}
 
-<form class="search_form" method="get" action="{{ path('artist_search') }}">
-    <div class="form">
-        <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
-        <button class="button_search" type="submit">Rechercher</button>
-    </div>
-</form>
+	<form class="flex justify-center" method="get" action="{{ path('artist_search') }}">
+		<div class="w-1/2 flex gap-2 items-center">
+			<input class="!w-56 border-none ring-1 ring-pink-700" type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
+			<button class="!w-52 bg-pink-700 hover:bg-pink-300 hover:text-pink-700 border-none" type="submit">Rechercher</button>
+		</div>
+	</form>
 
-{% if query is not empty %}
-    {% if artists is not empty %}
-        <ul class="search_result">
-            {% for artist in artists %}
-                <li class="search_list">
-                    <img src="{{ artist.image }}" alt="{{ artist.name }}" class="search_img">
-                    <a class="search_link" href="{{ path('artist_show', { 'id': artist.id }) }}">{{ artist.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun artiste trouvé.</p>
-    {% endif %}
-{% endif %}
+	{% if query is not empty %}
+		{% if artists is not empty %}
+			<ul class="grid grid-cols-4 gap-4">
+				{% for artist in artists %}
+					{% if artist.image is not empty %}
+						<li class="flex flex-col items-center p-2">
+							<a class="w-full flex flex-col items-center" href="{{ path('artist_show', { 'id': artist.id }) }}">
+								<img class="w-56 h-56 rounded-xl" src="{{ artist.image }}" alt="{{ artist.name }}" class="search_img">
+								<span class="hover:text-pink-300">{{ artist.name }}</span>
+							</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>Aucun artiste trouvé.</p>
+		{% endif %}
+	{% endif %}
 {% endblock body %}

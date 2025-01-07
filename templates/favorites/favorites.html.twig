@@ -1,23 +1,44 @@
 {% extends 'base.html.twig' %}
+{% set filter = filter is defined ? filter : 'all' %}
 
 {% block title %}Mes Favoris
 {% endblock %}
 
 {% block body %}
+	<h1 class="font-bold text-8xl">Mes Favoris</h1>
+
+	<div class="flex">
+		<form method=" get" action=" {{ path('get_all_favorites') }} ">
+			<label for="filter">Filtrer par :</label>
+			<select name="filter" id="filter" onchange="this.form.submit()">
+				<option value="all" {{ filter == 'all' ? 'selected' : '' }}>Tous</option>
+				<option value="artists" {{ filter == 'artists' ? 'selected' : '' }}>Artistes</option>
+				<option value="albums" {{ filter == 'albums' ? 'selected' : '' }}>Albums</option>
+			</select>
+		</form>
+	</div>
 
 	{% if favorites is not empty %}
-		<div class="grid grid-cols-6 gap-4">
+		<div class="grid grid-cols-6 gap-4 mt-10">
 			{% for favorite in favorites %}
 				<div>
-					<a href="{{ path('artist_show', { 'id': favorite.getArtistId() }) }}">
-						<img class="w-36 h-36 rounded-xl" src="{{ favorite.getImage() }}" alt="{{ favorite.getName() }}">
-						<span class="hover:text-spanink-300">{{ favorite.getName() }}</p>
-					</a>
+					{% if favorite.getArtistId is defined %}
+						<!-- Artiste Favori -->
+						<a href="{{ path('artist_show', { 'id': favorite.getArtistId() }) }}">
+							<img class="w-36 h-36 rounded-full" src="{{ favorite.getImage() }}" alt="{{ favorite.getName() }}">
+							<span class="hover:text-pink-300">{{ favorite.getName() }}</span>
+						</a>
+					{% elseif favorite.getAlbumId is defined %}
+						<!-- Album Favori -->
+						<a href="{{ path('album_show', { 'id': favorite.getAlbumId() }) }}">
+							<img class="w-36 h-36 rounded-xl" src="{{ favorite.getImage() }}" alt="{{ favorite.getTitle() }}">
+							<span class="hover:text-pink-300">{{ favorite.getTitle() }}</span>
+						</a>
+					{% endif %}
 				</div>
 			{% endfor %}
 		</div>
 	{% else %}
-		<p>Aucun artiste favori trouvé.</p>
+		<p>Aucun favori trouvé.</p>
 	{% endif %}
-
 {% endblock %}

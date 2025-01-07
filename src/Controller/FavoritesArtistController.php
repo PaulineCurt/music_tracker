@@ -51,7 +51,7 @@ class FavoritesArtistController extends AbstractController
         $this->entityManager->flush();
 
         // Rediriger ou retourner une réponse appropriée
-        return $this->redirectToRoute('get_favorites');
+        return $this->redirectToRoute('artist_show', ['id' => $id]);
     }
 
     /**

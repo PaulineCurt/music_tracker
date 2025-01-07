@@ -24,9 +24,28 @@
 				•
 				<p>{{ totalDurationHours }}h
 					{{ totalDurationMinutes }}min</p>
-
 			</div>
 		</div>
+	</div>
+
+	<div>
+		{% if isFavorite %}
+			<form action="{{ path('album_unfavorite', { 'id': album.id }) }}" method="post">
+				<button class="!w-52 bg-transparent border-none hover:text-pink-500" type="submit">
+					<i class="fas fa-heart-broken"></i>
+					<span>Supprimer des favoris</span>
+				</button>
+			</form>
+		{% else %}
+			<form action="{{ path('album_favorite', { 'id': album.id }) }}" method="post">
+				<input type="hidden" name="title" value="{{ album.name }}">
+				<input type="hidden" name="image" value="{{ img }}">
+				<button class="!w-52 bg-transparent border-none hover:text-pink-500" type="submit">
+					<i class="fas fa-heart"></i>
+					<span>Ajouter aux favoris</span>
+				</button>
+			</form>
+		{% endif %}
 	</div>
 
 	<table>
@@ -69,5 +88,4 @@
 			{% endfor %}
 		</tbody>
 	</table>
-
 {% endblock %}

@@ -1,20 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche d'artistes
+{% block title %}Accueil
 {% endblock %}
 
 {% block body %}
+	<div class="banner">
+		<h1 class="text-4xl font-bold text-center mt-8">Bienvenue sur Artistify</h1>
+		<p class="text-center mt-4">Recherchez vos artistes préférés et gérez vos favoris</p>
+	</div>
 
-	<form class="flex justify-center" method="get" action="{{ path('artist_search') }}">
-		<div class="w-1/2 flex gap-2 items-center">
-			<input class="!w-56 border-none ring-1 ring-pink-700" type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
-			<button class="!w-52 bg-pink-700 hover:bg-pink-300 hover:text-pink-700 border-none" type="submit">Rechercher</button>
-		</div>
-	</form>
+	<div class="flex justify-center items-center h-screen">
+		<form class="flex flex-col justify-center items-center" method="get" action="{{ path('artist_search') }}">
+			<div class="w-1/2 flex gap-2 items-center">
+				<input class="!w-56 border-none ring-1 ring-pink-700" type="text" name="q" value="{{ query }}" placeholder="Rechercher un artiste">
+				<button class="!w-52 bg-pink-700 hover:bg-pink-300 hover:text-pink-700 border-none" type="submit">Rechercher</button>
+			</div>
+		</form>
+	</div>
 
 	{% if query is not empty %}
 		{% if artists is not empty %}
-			<ul class="grid grid-cols-4 gap-4">
+			<ul class="grid grid-cols-4 gap-4 mt-8">
 				{% for artist in artists %}
 					{% if artist.image is not empty %}
 						<li class="flex flex-col items-center p-2">
@@ -27,7 +33,7 @@
 				{% endfor %}
 			</ul>
 		{% else %}
-			<p>Aucun artiste trouvé.</p>
+			<p class="text-center mt-8">Aucun artiste trouvé.</p>
 		{% endif %}
 	{% endif %}
-{% endblock body %}
+{% endblock %}

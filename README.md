@@ -48,7 +48,7 @@
 
 - Depuis la page profil d'un artiste, vous accédez à la liste des ses albums/singles
 
-## Consutler les morceaux des albums
+### Consutler les morceaux des albums
 
 - Cliquez sur un album pour afficher les détails.
 

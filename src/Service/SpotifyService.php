@@ -18,19 +18,27 @@ class SpotifyService
 
     public function searchArtists(string $query): array
     {
-        $response = $this->client->request('GET', 'https://api.spotify.com/v1/search', [
-            'query' => [
-                'q' => $query,
-                'type' => 'artist',
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->getAccessToken(),
-            ],
-        ]);
+        // Validation et nettoyage des données
+        $query = trim($query);
+        $query = htmlspecialchars($query, ENT_QUOTES, 'UTF-8');
 
-        $data = $response->toArray();
+        try {
+            $response = $this->client->request('GET', 'https://api.spotify.com/v1/search', [
+                'query' => [
+                    'q' => $query,
+                    'type' => 'artist',
+                ],
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                ],
+            ]);
 
-        return $data['artists']['items'] ?? [];
+            $data = $response->toArray();
+
+            return $data['artists']['items'] ?? [];
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function getArtist(string $id): array

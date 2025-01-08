@@ -7,25 +7,25 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-final class Version20241211203955 extends AbstractMigration
+final class Version20250108000000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create favorite_album table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE favorite_artist ADD name VARCHAR(255) NOT NULL, ADD image VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE TABLE favorite_album (
+            id INT AUTO_INCREMENT NOT NULL,
+            user_id INT NOT NULL,
+            album_id INT NOT NULL,
+            PRIMARY KEY(id)
+        )');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE favorite_artist DROP name, DROP image');
+        $this->addSql('DROP TABLE favorite_album');
     }
 }

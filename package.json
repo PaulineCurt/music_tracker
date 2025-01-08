@@ -2,6 +2,7 @@
     "scripts":{
         "docker-start": "docker-compose up -d",
         "docker-build": "docker-compose up --build -d",
-        "docker-stop": "docker-compose down"
+        "docker-stop": "docker-compose down",
+        "exec-api": "docker exec -it api /bin/bash"
     }
 }
